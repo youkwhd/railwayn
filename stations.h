@@ -11,8 +11,8 @@ struct stations_elm_t {
 };
 
 typedef struct stations_t {
-    stations_elm_t *head, *tail;
-};
+    stations_elm_t *first, *last;
+} stations_t; 
 
 void stations_create(stations_t &st);
 stations_elm_t *stations_create_new_elm(infotype info);
