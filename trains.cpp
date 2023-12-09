@@ -16,7 +16,7 @@ trains_elm_t *trains_create_elm(infotype info)
 
 bool trains_is_empty(trains_t &st)
 {
-    return st.head != NULL && st.tail != NULL;
+    return st.head == NULL && st.tail == NULL;
 }
 
 void trains_insert_first(trains_t &st, infotype info)
