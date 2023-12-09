@@ -73,3 +73,12 @@ infotype stations_delete_last(stations_t &st)
     }
     return elm->info;
 }
+
+void stations_debug(stations_t &st) 
+{
+    stations_elm_t *elm = st.first;
+    while (elm != NULL) {
+        std::cout << elm->info << std::endl;
+        elm = elm->next;
+    }
+}
