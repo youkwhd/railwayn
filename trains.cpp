@@ -1,9 +1,9 @@
 #include "trains.h"
 
-void trains_create(trains_t &st)
+void trains_create(trains_t &tr)
 {
-    st.head = NULL;
-    st.tail = NULL;
+    tr.head = NULL;
+    tr.tail = NULL;
 }
 
 trains_elm_t *trains_create_elm(trains_infotype_t info)
@@ -15,46 +15,46 @@ trains_elm_t *trains_create_elm(trains_infotype_t info)
     return elm;
 }
 
-bool trains_is_empty(trains_t &st)
+bool trains_is_empty(trains_t &tr)
 {
-    return st.head == NULL && st.tail == NULL;
+    return tr.head == NULL && tr.tail == NULL;
 }
 
-void trains_insert_first(trains_t &st, trains_infotype_t info)
+void trains_insert_first(trains_t &tr, trains_infotype_t info)
 {
     trains_elm_t *elm = trains_create_elm(info);
 
-    if (trains_is_empty(st)) {
-        st.head = elm;
-        st.tail = elm;
+    if (trains_is_empty(tr)) {
+        tr.head = elm;
+        tr.tail = elm;
         return;
     }
 
-    elm->next = st.head;
-    st.head = elm;
+    elm->next = tr.head;
+    tr.head = elm;
 }
 
-void trains_insert_last(trains_t &st, trains_infotype_t info)
+void trains_insert_last(trains_t &tr, trains_infotype_t info)
 {
     trains_elm_t *elm = trains_create_elm(info);
 
-    if (trains_is_empty(st)) {
-        st.head = elm;
-        st.tail = elm;
+    if (trains_is_empty(tr)) {
+        tr.head = elm;
+        tr.tail = elm;
         return;
     }
 
-    st.tail->next = elm;
-    st.tail = elm;
+    tr.tail->next = elm;
+    tr.tail = elm;
 }
 
-trains_infotype_t trains_delete_first(trains_t &st)
+trains_infotype_t trains_delete_first(trains_t &tr)
 {
-    trains_elm_t *elm = st.head;
-    st.head = st.head->next;
+    trains_elm_t *elm = tr.head;
+    tr.head = tr.head->next;
 
-    if (st.head == NULL) {
-        st.tail = NULL;
+    if (tr.head == NULL) {
+        tr.tail = NULL;
     }
 
     trains_infotype_t __info = elm->info;
@@ -62,19 +62,19 @@ trains_infotype_t trains_delete_first(trains_t &st)
     return __info;
 }
 
-trains_infotype_t trains_delete_last(trains_t &st)
+trains_infotype_t trains_delete_last(trains_t &tr)
 {
-    trains_elm_t *elm = st.head;
+    trains_elm_t *elm = tr.head;
 
     if (elm->next == NULL) {
-        return trains_delete_first(st);
+        return trains_delete_first(tr);
     }
 
     while (elm->next->next != NULL) {
         elm = elm->next;
     }
 
-    st.tail = elm->next;
+    tr.tail = elm->next;
 
     trains_infotype_t __info = elm->next->next->info;
     delete elm->next->next;
@@ -89,4 +89,13 @@ void trains_enqueue_station(trains_elm_t &train, stations_elm_t &station)
 infotype trains_dequeue_station(trains_elm_t &train)
 {
     return stations_delete_last(train.stations_queue);
+}
+
+void trains_debug(trains_t &tr)
+{
+    for (trains_elm_t *elm = tr.head; elm != NULL; elm = elm->next) {
+        std::cout << "train name: " << elm->info.train_name << std::endl;
+        std::cout << "passengers: " << elm->info.passengers << std::endl;
+        std::cout << std::endl;
+    }
 }
