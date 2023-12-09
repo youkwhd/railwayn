@@ -19,7 +19,7 @@ struct trains_elm_t {
 
 typedef struct trains_t {
     trains_elm_t *head, *tail;
-};
+} trains_t;
 
 void trains_create(trains_t &st);
 trains_elm_t *trains_create_elm(trains_infotype_t info);
