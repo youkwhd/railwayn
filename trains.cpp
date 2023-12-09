@@ -1,4 +1,5 @@
 #include "trains.h"
+#include "stations.h"
 
 void trains_create(trains_t &st)
 {
@@ -11,6 +12,7 @@ trains_elm_t *trains_create_elm(infotype info)
     trains_elm_t *elm = new trains_elm_t;
     elm->info = info;
     elm->next = NULL;
+    stations_create(elm->stations_queue);
     return elm;
 }
 

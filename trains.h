@@ -1,13 +1,20 @@
 #pragma once
 
 #include <iostream>
+#include "stations.h"
 
-typedef std::string infotype;
+#define TRAIN_PASSENGERS_MAX 128
+
+typedef struct {
+    std::string train_name;
+    size_t passengers;
+} infotype;
 
 typedef struct trains_elm_t trains_elm_t;
 struct trains_elm_t {
     infotype info;
     trains_elm_t *next;
+    stations_t stations_queue;
 };
 
 typedef struct trains_t {
