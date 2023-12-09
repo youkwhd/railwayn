@@ -21,3 +21,4 @@ void stations_insert_last(stations_t &st, infotype info);
 infotype stations_delete_first(stations_t &st);
 infotype stations_delete_last(stations_t &st);
 bool stations_is_empty(stations_t &st);
+void stations_debug(stations_t &st);
