@@ -78,7 +78,19 @@ void stations_debug(stations_t &st)
 {
     stations_elm_t *elm = st.first;
     while (elm != NULL) {
-        std::cout << elm->info << std::endl;
+        std::cout << "station: " << elm->info << std::endl;
         elm = elm->next;
     }
+}
+
+stations_elm_t *stations_find(stations_t &st, infotype info) 
+{
+    stations_elm_t *elm = st.first;
+    while (elm != NULL) {
+        if (elm->info == info) {
+            return elm;
+        }
+        elm = elm->next;
+    }
+    return NULL;
 }

@@ -81,14 +81,14 @@ trains_infotype_t trains_delete_last(trains_t &tr)
     return __info;
 }
 
-void trains_enqueue_station(trains_elm_t &train, stations_elm_t &station)
+void trains_enqueue_station(trains_elm_t *train, stations_elm_t *station)
 {
-    stations_insert_first(train.stations_queue, station.info);
+    stations_insert_last(train->stations_queue, station->info);
 }
 
-infotype trains_dequeue_station(trains_elm_t &train)
+infotype trains_dequeue_station(trains_elm_t *train)
 {
-    return stations_delete_last(train.stations_queue);
+    return stations_delete_first(train->stations_queue);
 }
 
 void trains_debug(trains_t &tr)
@@ -98,4 +98,16 @@ void trains_debug(trains_t &tr)
         std::cout << "passengers: " << elm->info.passengers << std::endl;
         std::cout << std::endl;
     }
+}
+
+trains_elm_t *trains_find(trains_t &tr, std::string name) 
+{
+    trains_elm_t *elm = tr.head;
+    while (elm != NULL) {
+        if (elm->info.train_name == name) {
+            return elm;
+        }
+        elm = elm->next;
+    }
+    return NULL;
 }
