@@ -6,7 +6,7 @@ void stations_create(stations_t &st)
     st.last = NULL;
 }
 
-stations_elm_t *stations_create_new_elm(infotype info) 
+stations_elm_t *stations_create_elm(stations_infotype_t info) 
 {
     stations_elm_t *elm = new stations_elm_t;
     elm->info = info;
@@ -21,9 +21,9 @@ bool stations_is_empty(stations_t &st)
     return st.first == NULL && st.last == NULL;
 }
 
-void stations_insert_first(stations_t &st, infotype info) 
+void stations_insert_first(stations_t &st, stations_infotype_t info) 
 {
-    stations_elm_t *elm = stations_create_new_elm(info);
+    stations_elm_t *elm = stations_create_elm(info);
     if (stations_is_empty(st)) {
         st.first = elm;
         st.last = elm; 
@@ -34,9 +34,9 @@ void stations_insert_first(stations_t &st, infotype info)
     }
 }
 
-void stations_insert_last(stations_t &st, infotype info) 
+void stations_insert_last(stations_t &st, stations_infotype_t info) 
 {
-    stations_elm_t *elm = stations_create_new_elm(info);
+    stations_elm_t *elm = stations_create_elm(info);
     if (stations_is_empty(st)) {
         stations_insert_first(st, info);
     } else {
@@ -46,7 +46,7 @@ void stations_insert_last(stations_t &st, infotype info)
     }
 }
 
-infotype stations_delete_first(stations_t &st) 
+stations_infotype_t stations_delete_first(stations_t &st) 
 {
     stations_elm_t *elm = st.first;
     if (st.first->next == NULL) {
@@ -60,7 +60,7 @@ infotype stations_delete_first(stations_t &st)
     return elm->info;
 }
 
-infotype stations_delete_last(stations_t &st) 
+stations_infotype_t stations_delete_last(stations_t &st) 
 {
     stations_elm_t *elm = st.last;
     if (st.first->next == NULL) {
@@ -83,7 +83,7 @@ void stations_debug(stations_t &st)
     }
 }
 
-stations_elm_t *stations_find(stations_t &st, infotype info) 
+stations_elm_t *stations_find(stations_t &st, stations_infotype_t info) 
 {
     stations_elm_t *elm = st.first;
     while (elm != NULL) {
