@@ -86,7 +86,7 @@ void trains_enqueue_station(trains_elm_t *train, stations_elm_t *station)
     stations_insert_last(train->stations_queue, station->info);
 }
 
-infotype trains_dequeue_station(trains_elm_t *train)
+stations_infotype_t trains_dequeue_station(trains_elm_t *train)
 {
     return stations_delete_first(train->stations_queue);
 }
