@@ -46,6 +46,21 @@ namespace railwayn
             head = node;
         }
 
+        void insert_last(T data) 
+        {
+            list_node<T> *node = new list_node<T> { data, NULL, NULL };
+
+            if (this->empty()) {
+                head = node;
+                tail = node;
+                return;
+            }
+
+            node->prev = tail;
+            tail->next = node;
+            tail = node;
+        }
+
         T delete_first()
         {
             list_node<T> *node = head;
@@ -53,7 +68,9 @@ namespace railwayn
 
             if (head == NULL) {
                 tail = NULL;
-                return node;
+                T __data = node->data;
+                delete node;
+                return __data;
             }
 
             head->prev = NULL;
@@ -61,5 +78,48 @@ namespace railwayn
             delete node;
             return __data;
         }
+
+        T delete_last() 
+        {
+            list_node<T> *node = tail;
+            tail = tail->prev;
+
+            if (tail == NULL) {
+                head = NULL;
+                T __data = node->data;
+                delete node;
+                return __data;
+            }
+
+            tail->next = NULL;
+            T __data = node->data;
+            delete node;
+            return __data;
+        }
+
+        void print() 
+        {
+            list_node<T> *node = head;
+
+            while (node != NULL) {
+                std::cout << node->data << std::endl;
+                node = node->next;
+            }
+        }
+
+        T *find(T data) 
+        {
+            list_node<T> *node = head;
+            
+            while (node != NULL) {
+                if (node->data == data) {
+                    return &node->data;
+                }
+                node = node->next;
+            }
+
+            return NULL;
+        }
+        
     };
 }

@@ -8,9 +8,10 @@
 int main(void)
 {
     railwayn::list<int> list;
-    std::cout << (list.head == NULL ? "NULL" : "head") << std::endl;
 
     list.insert_first(10);
+    list.insert_first(20);
+    list.print();
 
     return 0;
 }
