@@ -11,7 +11,7 @@ trains_elm_t *trains_create_elm(trains_infotype_t info)
     trains_elm_t *elm = new trains_elm_t;
     elm->info = info;
     elm->next = NULL;
-    stations_create(elm->stations_queue);
+    stations_queue_create(elm->stations_queue);
     return elm;
 }
 
@@ -79,16 +79,6 @@ trains_infotype_t trains_delete_last(trains_t &tr)
     trains_infotype_t __info = elm->next->next->info;
     delete elm->next->next;
     return __info;
-}
-
-void trains_enqueue_station(trains_elm_t *train, stations_elm_t *station)
-{
-    stations_insert_last(train->stations_queue, station->info);
-}
-
-stations_infotype_t trains_dequeue_station(trains_elm_t *train)
-{
-    return stations_delete_first(train->stations_queue);
 }
 
 void trains_debug(trains_t &tr)
