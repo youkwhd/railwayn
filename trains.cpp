@@ -86,6 +86,7 @@ void trains_debug(trains_t &tr)
     for (trains_elm_t *elm = tr.head; elm != NULL; elm = elm->next) {
         std::cout << "train name: " << elm->info.train_name << std::endl;
         std::cout << "passengers: " << elm->info.passengers << std::endl;
+        stations_queue_debug(elm->stations_queue);
         std::cout << std::endl;
     }
 }
