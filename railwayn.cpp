@@ -6,7 +6,6 @@
 
 int main(void)
 {
-    /* std::cout << "Hello from C++" << std::endl; */
     stations_t stations;
     trains_t trains;
 
@@ -16,7 +15,6 @@ int main(void)
     stations_insert_last(stations, "3");
     stations_insert_last(stations, "4");
     stations_insert_last(stations, "5");
-    // stations_debug(stations);
 
     trains_create(trains);
     trains_insert_last(trains, {"A", 20});
