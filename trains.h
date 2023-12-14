@@ -25,10 +25,15 @@ typedef struct trains_t {
 void trains_create(trains_t &tr);
 trains_elm_t *trains_create_elm(trains_infotype_t info);
 bool trains_is_empty(trains_t &tr);
+/* 3. 1 */
 void trains_insert_first(trains_t &tr, trains_infotype_t info);
+/* 3. 1 */
 void trains_insert_last(trains_t &tr, trains_infotype_t info);
 trains_infotype_t trains_delete_first(trains_t &tr);
 trains_infotype_t trains_delete_last(trains_t &tr);
+/* 3. 4 */
 trains_elm_t *trains_find(trains_t &tr, std::string name);
 void trains_cleanup(trains_t &tr);
-void trains_debug(trains_t &tr);
+/* 3. 2 */
+/* 3. 8 */
+void trains_debug(trains_t &tr, bool show_queue);

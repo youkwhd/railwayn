@@ -49,7 +49,7 @@ int main(void)
     stations_queue_enqueue(train_4->stations_queue, stations_find(stations, STATION_2));
     stations_queue_enqueue(train_4->stations_queue, stations_find(stations, STATION_3));
     stations_queue_enqueue(train_4->stations_queue, stations_find(stations, STATION_1));
-    trains_debug(trains);
+    trains_debug(trains, 1);
 
     trains_cleanup(trains);
     stations_cleanup(stations);

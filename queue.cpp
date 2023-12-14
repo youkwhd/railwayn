@@ -19,6 +19,17 @@ bool stations_queue_is_empty(stations_queue_t &st)
 	return st.head == NULL && st.tail == NULL;
 }
 
+size_t stations_queue_length(stations_queue_t &st)
+{
+    size_t length = 0;
+
+    for (stations_queue_elm_t *elm = st.head; elm != NULL; elm = elm->next) {
+        length++;
+    }
+
+    return length;
+}
+
 void stations_queue_enqueue(stations_queue_t &st, stations_queue_infotype_t info) 
 {
 	stations_queue_elm_t *elm = stations_queue_create_elm(info);

@@ -23,4 +23,5 @@ stations_infotype_t stations_delete_last(stations_t &st);
 bool stations_is_empty(stations_t &st);
 void stations_debug(stations_t &st);
 void stations_cleanup(stations_t &st);
+/* 3. 5 */
 stations_elm_t *stations_find(stations_t &st, stations_infotype_t info);
