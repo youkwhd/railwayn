@@ -78,7 +78,7 @@ void stations_debug(stations_t &st)
 {
     stations_elm_t *elm = st.first;
     while (elm != NULL) {
-        std::cout << "station: " << elm->info << std::endl;
+        std::cout << "Station: " << elm->info << std::endl;
         elm = elm->next;
     }
 }

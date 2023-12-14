@@ -61,8 +61,9 @@ void stations_queue_cleanup(stations_queue_t &st)
 void stations_queue_debug(stations_queue_t &st)
 {
 	stations_queue_elm_t *elm = st.head;
+    std::cout << "Stations: " << std::endl;
 	while (elm != NULL) {
-		std::cout << "stations: " << elm->info->info << std::endl;
+		std::cout << "  - " << elm->info->info << std::endl;
 		elm = elm->next;
 	}
 }

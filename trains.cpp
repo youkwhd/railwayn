@@ -84,8 +84,8 @@ trains_infotype_t trains_delete_last(trains_t &tr)
 void trains_debug(trains_t &tr)
 {
     for (trains_elm_t *elm = tr.head; elm != NULL; elm = elm->next) {
-        std::cout << "train name: " << elm->info.train_name << std::endl;
-        std::cout << "passengers: " << elm->info.passengers << std::endl;
+        std::cout << "Train: " << elm->info.train_name << std::endl;
+        std::cout << "Passengers: " << elm->info.passengers << std::endl;
         stations_queue_debug(elm->stations_queue);
 
         if (elm->next != NULL)
