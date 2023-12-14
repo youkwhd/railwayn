@@ -47,6 +47,17 @@ stations_queue_infotype_t stations_queue_dequeue(stations_queue_t &st)
 	return __info;
 }
 
+void stations_queue_cleanup(stations_queue_t &st)
+{
+    stations_queue_elm_t *elm = st.head;
+
+    while (elm != NULL) {
+        stations_queue_elm_t *tmp = elm;
+        elm = elm->next;
+        delete tmp;
+    }
+}
+
 void stations_queue_debug(stations_queue_t &st)
 {
 	stations_queue_elm_t *elm = st.head;

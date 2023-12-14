@@ -93,12 +93,23 @@ void trains_debug(trains_t &tr)
 
 trains_elm_t *trains_find(trains_t &tr, std::string name) 
 {
-    trains_elm_t *elm = tr.head;
-    while (elm != NULL) {
+    for (trains_elm_t *elm = tr.head; elm != NULL; elm = elm->next) {
         if (elm->info.train_name == name) {
             return elm;
         }
-        elm = elm->next;
     }
+
     return NULL;
+}
+
+void trains_cleanup(trains_t &tr)
+{
+    trains_elm_t *elm = tr.head;
+
+    while (elm != NULL) {
+        trains_elm_t *tmp = elm;
+        stations_queue_cleanup(elm->stations_queue);
+        elm = elm->next;
+        delete tmp;
+    }
 }

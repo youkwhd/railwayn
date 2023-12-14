@@ -30,4 +30,5 @@ void trains_insert_last(trains_t &tr, trains_infotype_t info);
 trains_infotype_t trains_delete_first(trains_t &tr);
 trains_infotype_t trains_delete_last(trains_t &tr);
 trains_elm_t *trains_find(trains_t &tr, std::string name);
+void trains_cleanup(trains_t &tr);
 void trains_debug(trains_t &tr);

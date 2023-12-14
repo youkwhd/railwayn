@@ -94,3 +94,14 @@ stations_elm_t *stations_find(stations_t &st, stations_infotype_t info)
     }
     return NULL;
 }
+
+void stations_cleanup(stations_t &st)
+{
+    stations_elm_t *elm = st.first;
+
+    while (elm != NULL) {
+        stations_elm_t *tmp = elm;
+        elm = elm->next;
+        delete tmp;
+    }
+}

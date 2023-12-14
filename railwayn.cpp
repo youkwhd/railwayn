@@ -40,5 +40,7 @@ int main(void)
     stations_queue_enqueue(trains_d->stations_queue, stations_find(stations, "1"));
     trains_debug(trains);
 
+    trains_cleanup(trains);
+    stations_cleanup(stations);
     return 0;
 }
