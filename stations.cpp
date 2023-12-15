@@ -21,7 +21,24 @@ bool stations_is_empty(stations_t &st)
     return st.first == NULL && st.last == NULL;
 }
 
-void stations_insert_first(stations_t &st, stations_infotype_t info) 
+void stations_add_ticket(stations_elm_t *station, size_t passengers, stations_elm_t *dest)
+{
+    station->info.tickets.push_back({ passengers, dest });
+}
+
+size_t stations_tickets_count(stations_t &st)
+{
+    
+    size_t count = 0;
+
+    for (stations_elm_t *elm = st.first; elm != NULL; elm = elm->next) {
+        count += elm->info.tickets.size();
+    }
+
+    return count;
+}
+
+stations_elm_t *stations_insert_first(stations_t &st, stations_infotype_t info) 
 {
     stations_elm_t *elm = stations_create_elm(info);
     if (stations_is_empty(st)) {
@@ -32,18 +49,23 @@ void stations_insert_first(stations_t &st, stations_infotype_t info)
         st.first->prev = elm;
         st.first = elm;
     }
+
+    return elm;
 }
 
-void stations_insert_last(stations_t &st, stations_infotype_t info) 
+stations_elm_t *stations_insert_last(stations_t &st, stations_infotype_t info) 
 {
     stations_elm_t *elm = stations_create_elm(info);
+
     if (stations_is_empty(st)) {
-        stations_insert_first(st, info);
+        elm = stations_insert_first(st, info);
     } else {
         elm->prev = st.last;
         st.last->next = elm;
         st.last = elm;
     }
+
+    return elm;
 }
 
 stations_infotype_t stations_delete_first(stations_t &st) 
@@ -97,6 +119,13 @@ void stations_debug(stations_t &st)
     stations_elm_t *elm = st.first;
     while (elm != NULL) {
         std::cout << "Station: " << elm->info.name << std::endl;
+
+        for (auto it = elm->info.tickets.begin(); it != elm->info.tickets.end(); it++) {
+            std::cout << "    - Passengers: " <<  it->passengers << std::endl;
+            std::cout << "    - Dest: " <<  it->dest->info.name << std::endl;
+            std::cout << std::endl;
+        }
+
         elm = elm->next;
     }
 }

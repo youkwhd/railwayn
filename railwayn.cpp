@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 
 #include "stations.h"
 #include "trains.h"
@@ -26,34 +27,51 @@ int main(void)
     stations_create(stations);
     trains_create(trains);
 
-    stations_insert_last(stations, {STATION_1});
-    stations_insert_last(stations, {STATION_2});
-    stations_insert_last(stations, {STATION_3});
-    stations_insert_last(stations, {STATION_4});
-    stations_insert_last(stations, {STATION_5});
+    stations_elm_t *station_1 = stations_insert_last(stations, {STATION_1});
+    stations_elm_t *station_2 = stations_insert_last(stations, {STATION_2});
+    stations_elm_t *station_3 = stations_insert_last(stations, {STATION_3});
+    stations_elm_t *station_4 = stations_insert_last(stations, {STATION_4});
+    stations_elm_t *station_5 = stations_insert_last(stations, {STATION_5});
 
-    trains_insert_last(trains, {TRAIN_1, TRAIN_PASSENGER_SIZE});
-    trains_insert_last(trains, {TRAIN_2, TRAIN_PASSENGER_SIZE});
-    trains_insert_last(trains, {TRAIN_3, TRAIN_PASSENGER_SIZE});
-    trains_insert_last(trains, {TRAIN_4, TRAIN_PASSENGER_SIZE});
+    stations_add_ticket(station_1, 20, station_3);
+    stations_add_ticket(station_1, 50, station_3);
+    stations_add_ticket(station_1, 40, station_2);
 
-    trains_elm_t *train_1 = trains_find(trains, TRAIN_1);
-    stations_queue_enqueue(train_1->stations_queue, stations_find(stations, STATION_3));
-    stations_queue_enqueue(train_1->stations_queue, stations_find(stations, STATION_4));
+    stations_add_ticket(station_2, 40, station_3);
+    stations_add_ticket(station_2, 50, station_5);
+    stations_add_ticket(station_2, 40, station_4);
 
-    trains_elm_t *train_2 = trains_find(trains, TRAIN_2);
-    stations_queue_enqueue(train_2->stations_queue, stations_find(stations, STATION_1));
-    stations_queue_enqueue(train_2->stations_queue, stations_find(stations, STATION_4));
-    stations_queue_enqueue(train_2->stations_queue, stations_find(stations, STATION_2));
+    stations_add_ticket(station_3, 40, station_1);
+    stations_add_ticket(station_3, 20, station_5);
+    stations_add_ticket(station_3, 30, station_4);
 
-    trains_elm_t *train_3 = trains_find(trains, TRAIN_3);
-    stations_queue_enqueue(train_3->stations_queue, stations_find(stations, STATION_4));
+    stations_add_ticket(station_4, 40, station_5);
 
-    trains_elm_t *train_4 = trains_find(trains, TRAIN_4);
-    stations_queue_enqueue(train_4->stations_queue, stations_find(stations, STATION_2));
-    stations_queue_enqueue(train_4->stations_queue, stations_find(stations, STATION_3));
-    stations_queue_enqueue(train_4->stations_queue, stations_find(stations, STATION_1));
-    trains_debug(trains, 1);
+    stations_add_ticket(station_5, 10, station_1);
+    stations_add_ticket(station_5, 10, station_2);
+
+    stations_debug(stations);
+
+    trains_elm_t *train_1 = trains_insert_last(trains, {TRAIN_1, TRAIN_PASSENGER_SIZE});
+    stations_queue_enqueue(train_1->stations_queue, station_3);
+    stations_queue_enqueue(train_1->stations_queue, station_4);
+
+    trains_elm_t *train_2 = trains_insert_last(trains, {TRAIN_2, TRAIN_PASSENGER_SIZE});
+    stations_queue_enqueue(train_2->stations_queue, station_1);
+    stations_queue_enqueue(train_2->stations_queue, station_4);
+    stations_queue_enqueue(train_2->stations_queue, station_2);
+
+    trains_elm_t *train_3 = trains_insert_last(trains, {TRAIN_3, TRAIN_PASSENGER_SIZE});
+    stations_queue_enqueue(train_3->stations_queue, station_4);
+
+    trains_elm_t *train_4 = trains_insert_last(trains, {TRAIN_4, TRAIN_PASSENGER_SIZE});
+    stations_queue_enqueue(train_4->stations_queue, station_2);
+    stations_queue_enqueue(train_4->stations_queue, station_3);
+    stations_queue_enqueue(train_4->stations_queue, station_1);
+
+    std::cout << stations_tickets_count(stations) << std::endl;
+
+    /* trains_debug(trains, 1); */
 
     trains_cleanup(trains);
     stations_cleanup(stations);

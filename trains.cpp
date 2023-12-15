@@ -20,32 +20,34 @@ bool trains_is_empty(trains_t &tr)
     return tr.head == NULL && tr.tail == NULL;
 }
 
-void trains_insert_first(trains_t &tr, trains_infotype_t info)
+trains_elm_t *trains_insert_first(trains_t &tr, trains_infotype_t info)
 {
     trains_elm_t *elm = trains_create_elm(info);
 
     if (trains_is_empty(tr)) {
         tr.head = elm;
         tr.tail = elm;
-        return;
+        return elm;
     }
 
     elm->next = tr.head;
     tr.head = elm;
+    return elm;
 }
 
-void trains_insert_last(trains_t &tr, trains_infotype_t info)
+trains_elm_t *trains_insert_last(trains_t &tr, trains_infotype_t info)
 {
     trains_elm_t *elm = trains_create_elm(info);
 
     if (trains_is_empty(tr)) {
         tr.head = elm;
         tr.tail = elm;
-        return;
+        return elm;
     }
 
     tr.tail->next = elm;
     tr.tail = elm;
+    return elm;
 }
 
 trains_infotype_t trains_delete_first(trains_t &tr)

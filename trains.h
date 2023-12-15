@@ -26,9 +26,9 @@ void trains_create(trains_t &tr);
 trains_elm_t *trains_create_elm(trains_infotype_t info);
 bool trains_is_empty(trains_t &tr);
 /* 3. 1 */
-void trains_insert_first(trains_t &tr, trains_infotype_t info);
+trains_elm_t *trains_insert_first(trains_t &tr, trains_infotype_t info);
 /* 3. 1 */
-void trains_insert_last(trains_t &tr, trains_infotype_t info);
+trains_elm_t *trains_insert_last(trains_t &tr, trains_infotype_t info);
 /* 3. 3 */
 trains_infotype_t trains_delete_first(trains_t &tr);
 /* 3. 3 */
