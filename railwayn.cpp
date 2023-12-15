@@ -11,10 +11,8 @@
 #define STATION_4 "Patukan (4)"
 #define STATION_5 "Binjai (5)"
 
-#define TRAIN_1 "Harina"
-#define TRAIN_2 "Serayu"
-#define TRAIN_3 "Ambarawa Ekspres"
-#define TRAIN_4 "Tawang Alun"
+#define TRAIN_A "Ambarawa Ekspres"
+#define TRAIN_B "Tawang Alun"
 
 /* 3. 12 */
 int main(void)
@@ -48,8 +46,8 @@ int main(void)
     stations_add_ticket(station_5, 10, station_1);
     stations_add_ticket(station_5, 10, station_2);
 
-    trains_elm_t *train_1 = trains_insert_last(trains, {TRAIN_1});
-    trains_elm_t *train_2 = trains_insert_last(trains, {TRAIN_2});
+    trains_elm_t *train_1 = trains_insert_last(trains, {TRAIN_A});
+    trains_elm_t *train_2 = trains_insert_last(trains, {TRAIN_B});
 
     trains_debug(trains, 1);
 
