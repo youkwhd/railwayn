@@ -32,14 +32,7 @@ size_t stations_queue_length(stations_queue_t &st)
 
 void stations_queue_delete_first(stations_queue_t &st)
 {
-    stations_queue_elm_t *__tmp = st.head;
-    st.head = st.head->next;
-
-    if (st.head == NULL) {
-        st.tail = NULL;
-    }
-
-    delete __tmp;
+    stations_queue_dequeue(st);
 }
 
 void stations_queue_delete_last(stations_queue_t &st)

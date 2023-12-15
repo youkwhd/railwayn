@@ -113,8 +113,8 @@ void trains_cleanup(trains_t &tr)
 
     while (elm != NULL) {
         trains_elm_t *tmp = elm;
-        stations_queue_cleanup(elm->stations_queue);
         elm = elm->next;
+        stations_queue_cleanup(tmp->stations_queue);
         delete tmp;
     }
 }

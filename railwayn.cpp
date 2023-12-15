@@ -15,6 +15,9 @@
 #define TRAIN_3 "Ambarawa Ekspres"
 #define TRAIN_4 "Tawang Alun"
 
+#define TRAIN_PASSENGER_SIZE 100
+
+/* 3. 12 */
 int main(void)
 {
     stations_t stations;
@@ -29,10 +32,10 @@ int main(void)
     stations_insert_last(stations, {STATION_4});
     stations_insert_last(stations, {STATION_5});
 
-    trains_insert_last(trains, {TRAIN_1, 20});
-    trains_insert_last(trains, {TRAIN_2, 30});
-    trains_insert_last(trains, {TRAIN_3, 10});
-    trains_insert_last(trains, {TRAIN_4, 40});
+    trains_insert_last(trains, {TRAIN_1, TRAIN_PASSENGER_SIZE});
+    trains_insert_last(trains, {TRAIN_2, TRAIN_PASSENGER_SIZE});
+    trains_insert_last(trains, {TRAIN_3, TRAIN_PASSENGER_SIZE});
+    trains_insert_last(trains, {TRAIN_4, TRAIN_PASSENGER_SIZE});
 
     trains_elm_t *train_1 = trains_find(trains, TRAIN_1);
     stations_queue_enqueue(train_1->stations_queue, stations_find(stations, STATION_3));
