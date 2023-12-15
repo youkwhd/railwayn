@@ -58,6 +58,7 @@ trains_infotype_t trains_delete_first(trains_t &tr)
     }
 
     trains_infotype_t __info = elm->info;
+    stations_queue_cleanup(elm->stations_queue);
     delete elm;
     return __info;
 }
@@ -74,10 +75,10 @@ trains_infotype_t trains_delete_last(trains_t &tr)
         elm = elm->next;
     }
 
-    tr.tail = elm->next;
-
-    trains_infotype_t __info = elm->next->next->info;
-    delete elm->next->next;
+    trains_infotype_t __info = tr.tail->info;
+    stations_queue_cleanup(tr.tail->stations_queue);
+    delete tr.tail;
+    tr.tail = elm;
     return __info;
 }
 
@@ -116,4 +117,24 @@ void trains_cleanup(trains_t &tr)
         elm = elm->next;
         delete tmp;
     }
+}
+
+stations_elm_t *trains_find_station_dest(trains_elm_t *train, std::string station_name)
+{
+    stations_queue_elm_t *elm = stations_queue_find(train->stations_queue, station_name);
+    return elm == NULL ? NULL : elm->info;
+}
+
+void __trains_delete_station_entirely(trains_t &tr, stations_t &st, trains_elm_t *train, std::string station_name)
+{
+    for (trains_elm_t *elm = tr.head; elm != NULL; elm = elm->next) {
+        stations_queue_elm_t *queue_elm = stations_queue_find(elm->stations_queue, station_name);
+
+        while (queue_elm != NULL) {
+            stations_queue_delete(elm->stations_queue, queue_elm);
+            queue_elm = stations_queue_find(elm->stations_queue, station_name);
+        }
+    }
+
+    stations_delete(st, stations_find(st, station_name));
 }

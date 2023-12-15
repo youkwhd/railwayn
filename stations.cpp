@@ -74,20 +74,38 @@ stations_infotype_t stations_delete_last(stations_t &st)
     return elm->info;
 }
 
+stations_infotype_t stations_delete(stations_t &st, stations_elm_t *station)
+{
+    if (st.first == station) {
+        return stations_delete_first(st);
+    }
+
+    if (st.last == station) {
+        return stations_delete_last(st);
+    }
+
+    station->prev->next = station->next;
+    station->next->prev = station->prev;
+
+    stations_infotype_t __info = station->info;
+    delete station;
+    return __info;
+}
+
 void stations_debug(stations_t &st) 
 {
     stations_elm_t *elm = st.first;
     while (elm != NULL) {
-        std::cout << "Station: " << elm->info << std::endl;
+        std::cout << "Station: " << elm->info.name << std::endl;
         elm = elm->next;
     }
 }
 
-stations_elm_t *stations_find(stations_t &st, stations_infotype_t info) 
+stations_elm_t *stations_find(stations_t &st, std::string name)
 {
     stations_elm_t *elm = st.first;
     while (elm != NULL) {
-        if (elm->info == info) {
+        if (elm->info.name == name) {
             return elm;
         }
         elm = elm->next;

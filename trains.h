@@ -29,11 +29,18 @@ bool trains_is_empty(trains_t &tr);
 void trains_insert_first(trains_t &tr, trains_infotype_t info);
 /* 3. 1 */
 void trains_insert_last(trains_t &tr, trains_infotype_t info);
+/* 3. 3 */
 trains_infotype_t trains_delete_first(trains_t &tr);
+/* 3. 3 */
 trains_infotype_t trains_delete_last(trains_t &tr);
 /* 3. 4 */
 trains_elm_t *trains_find(trains_t &tr, std::string name);
+/* 3. 3 */
 void trains_cleanup(trains_t &tr);
 /* 3. 2 */
 /* 3. 8 */
 void trains_debug(trains_t &tr, bool show_queue);
+/* 3. 9 */
+stations_elm_t *trains_find_station_dest(trains_elm_t *train, std::string station_name);
+/* 3. 10 */
+void __trains_delete_station_entirely(trains_t &tr, stations_t &st, trains_elm_t *train, std::string station_name);

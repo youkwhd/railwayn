@@ -21,13 +21,14 @@ int main(void)
     trains_t trains;
 
     stations_create(stations);
-    stations_insert_last(stations, STATION_1);
-    stations_insert_last(stations, STATION_2);
-    stations_insert_last(stations, STATION_3);
-    stations_insert_last(stations, STATION_4);
-    stations_insert_last(stations, STATION_5);
-
     trains_create(trains);
+
+    stations_insert_last(stations, {STATION_1});
+    stations_insert_last(stations, {STATION_2});
+    stations_insert_last(stations, {STATION_3});
+    stations_insert_last(stations, {STATION_4});
+    stations_insert_last(stations, {STATION_5});
+
     trains_insert_last(trains, {TRAIN_1, 20});
     trains_insert_last(trains, {TRAIN_2, 30});
     trains_insert_last(trains, {TRAIN_3, 10});
