@@ -141,6 +141,17 @@ stations_elm_t *stations_find(stations_t &st, std::string name)
     return NULL;
 }
 
+bool stations_direction_is(stations_elm_t *from, stations_elm_t *to, direction expected)
+{
+    for (; from != NULL; from = expected == DIRECTION_RIGHT ? from->next : from->prev) {
+        if (from == to) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 void stations_cleanup(stations_t &st)
 {
     stations_elm_t *elm = st.first;

@@ -41,12 +41,21 @@ size_t destinations_total_passengers(destinations_t &st)
     return total;
 }
 
-void destinations_delete_first(destinations_t &st)
+destinations_infotype_t destinations_delete_first(destinations_t &st)
 {
-    destinations_dequeue(st);
+    destinations_elm_t *elm = st.head;
+    st.head = st.head->next;
+
+    if (st.head == NULL) {
+        st.tail = NULL;
+    }
+
+    destinations_infotype_t __info = elm->info;
+    delete elm;
+    return __info;
 }
 
-void destinations_delete_last(destinations_t &st)
+destinations_infotype_t destinations_delete_last(destinations_t &st)
 {
     destinations_elm_t *elm = st.head;
 
@@ -59,11 +68,13 @@ void destinations_delete_last(destinations_t &st)
     }
 
     elm->next = NULL;
+    destinations_infotype_t __info = st.tail->info;
     delete st.tail;
     st.tail = elm;
+    return __info;
 }
 
-void destinations_delete(destinations_t &st, destinations_elm_t *elm)
+destinations_infotype_t destinations_delete(destinations_t &st, destinations_elm_t *elm)
 {
     if (st.head == elm) {
         return destinations_delete_first(st);
@@ -80,10 +91,26 @@ void destinations_delete(destinations_t &st, destinations_elm_t *elm)
     }
 
     __elm->next = __elm->next->next;
+    destinations_infotype_t __info = elm->info;
     delete elm;
+    return __info;
 }
 
-void destinations_enqueue(destinations_t &st, destinations_infotype_t info) 
+void destinations_insert_first(destinations_t &st, destinations_infotype_t info)
+{
+    destinations_elm_t *elm = destinations_create_elm(info);
+
+    if (destinations_is_empty(st)) {
+        st.head = elm;
+        st.tail = elm;
+        return;
+    }
+
+    elm->next = st.head;
+    st.head = elm;
+}
+
+void destinations_insert_last(destinations_t &st, destinations_infotype_t info)
 {
     destinations_elm_t *elm = destinations_create_elm(info);
 
@@ -95,20 +122,6 @@ void destinations_enqueue(destinations_t &st, destinations_infotype_t info)
 
     st.tail->next = elm;
     st.tail = elm;
-}
-
-destinations_infotype_t destinations_dequeue(destinations_t &st) 
-{
-    destinations_elm_t *elm = st.head;
-    st.head = st.head->next;
-
-    if (st.head == NULL) {
-        st.tail = NULL;
-    }
-
-    destinations_infotype_t __info = elm->info;
-    delete elm;
-    return __info;
 }
 
 void destinations_cleanup(destinations_t &st)

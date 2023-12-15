@@ -42,3 +42,4 @@ void stations_debug(stations_t &st);
 void stations_cleanup(stations_t &st);
 /* 3. 5 */
 stations_elm_t *stations_find(stations_t &st, std::string name);
+bool stations_direction_is(stations_elm_t *from, stations_elm_t *to, direction expected);

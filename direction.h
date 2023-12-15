@@ -1,6 +1,7 @@
 #pragma once
 
 typedef enum direction {
-    DIRECTION_LEFT = 0,
+    DIRECTION_UNKNOWN = 0,
+    DIRECTION_LEFT,
     DIRECTION_RIGHT,
 } direction;

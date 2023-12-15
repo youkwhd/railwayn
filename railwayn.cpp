@@ -46,10 +46,10 @@ int main(void)
     stations_add_ticket(station_5, 10, station_1);
     stations_add_ticket(station_5, 10, station_2);
 
-    trains_elm_t *train_1 = trains_insert_last(trains, {TRAIN_A});
-    trains_elm_t *train_2 = trains_insert_last(trains, {TRAIN_B});
+    trains_insert_last(trains, {TRAIN_A});
+    trains_insert_last(trains, {TRAIN_B});
 
-    trains_debug(trains, 1);
+    trains_simulate_run(trains, stations);
 
     trains_cleanup(trains);
     stations_cleanup(stations);

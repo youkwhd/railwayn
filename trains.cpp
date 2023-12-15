@@ -141,43 +141,23 @@ void __trains_delete_station_entirely(trains_t &tr, stations_t &st, trains_elm_t
     stations_delete(st, stations_find(st, station_name));
 }
 
+bool trains_has_tickets(trains_t &tr)
+{
+    for (trains_elm_t *train = tr.head; train != NULL; train = train->next) {
+        if (!destinations_is_empty(train->destinations)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 void trains_simulate_run(trains_t &tr, stations_t &st)
 {
     direction dir = DIRECTION_RIGHT;
     stations_elm_t *station = st.first;
 
-    while (station != NULL && stations_tickets_count(st) != 0) {
-        /* trains has arrived to a station, remove
-         * corrensponding tickets from trains.
-         */
-        for (trains_elm_t *train = tr.head; train != NULL; train = train->next) {
-            /* while (!destinations_is_empty(train->destinations)) { */
-            /*     ticket_t ticket = destinations_dequeue(train->destinations); */
-            /*     #ifdef __DEBUG */
-            /*     std::cout << "Dropped passengers: " << ticket.passengers << std::endl; */
-            /*     #endif */
-            /* } */
-        }
-
-        /* assign trains new tickets
-         */
-        for (trains_elm_t *train = tr.head; train != NULL; train = train->next) {
-            size_t total_passengers = destinations_total_passengers(train->destinations);
-
-            for (auto ticket = station->info.tickets.begin(); ticket != station->info.tickets.end(); ticket++) {
-                /* TODO: only add tickets that 
-                 * goes the same direction as the train
-                 */
-
-                if (total_passengers + ticket->passengers > TRAIN_PASSENGGERS_MAX) {
-                    break;
-                }
-
-                destinations_enqueue(train->destinations, *ticket);
-                total_passengers += ticket->passengers;
-            }
-        }
-
+    while (stations_tickets_count(st) != 0 || trains_has_tickets(tr)) {
         if (station == st.first) {
             dir = DIRECTION_RIGHT;
         }
@@ -186,6 +166,67 @@ void trains_simulate_run(trains_t &tr, stations_t &st)
             dir = DIRECTION_LEFT;
         }
 
-        station = DIRECTION_RIGHT ? station->next : station->prev;
+        std::cout << "Entering station: " << station->info.name << std::endl;
+
+        for (trains_elm_t *train = tr.head; train != NULL; train = train->next) {
+            /* trains has arrived to a station, remove
+             * corrensponding tickets from trains.
+             */
+            bool __got_output = false;
+            std::cout << "    Train: " << train->info.train_name << std::endl;
+            std::cout << "    Dropped passengers: " << std::endl;
+
+            for (destinations_elm_t *ticket = destinations_find(train->destinations, station->info.name); ticket != NULL; ticket = destinations_find(train->destinations, station->info.name)) {
+                __got_output = true;
+                std::cout << "        - " << ticket->info.dest->info.name << " [" << ticket->info.passengers << " Passengers]" << std::endl;
+                destinations_delete(train->destinations, ticket);
+            }
+
+            if (!__got_output) {
+                std::cout << "       NONE" << std::endl;
+            }
+
+            __got_output = false;
+            std::cout << std::endl;
+
+            /* assign trains new tickets
+             */
+            std::cout << "    Getting passengers: " << std::endl;
+            size_t total_passengers = destinations_total_passengers(train->destinations);
+
+            auto ticket = station->info.tickets.begin();
+            while (ticket != station->info.tickets.end()) {
+                if (!stations_direction_is(station, ticket->dest, dir)) {
+                    ticket++;
+                    continue;
+                }
+
+                if (total_passengers + ticket->passengers > TRAIN_PASSENGGERS_MAX) {
+                    break;
+                }
+
+                __got_output = true;
+                std::cout << "        + " << ticket->dest->info.name << " [" << ticket->passengers << " Passengers]" << std::endl;
+                destinations_insert_last(train->destinations, *ticket);
+                total_passengers += ticket->passengers;
+                station->info.tickets.erase(ticket);
+            }
+
+            if (!__got_output) {
+                std::cout << "       NONE" << std::endl;
+            }
+
+            std::cout << std::endl;
+        }
+
+#ifdef MODE_INTERACTIVE
+        getchar();
+#endif
+
+        std::cout << std::endl;
+        station = dir == DIRECTION_RIGHT ? station->next : station->prev;
+        if (station == NULL) {
+            break;
+        }
     }
 }

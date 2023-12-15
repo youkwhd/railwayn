@@ -46,4 +46,5 @@ void trains_debug(trains_t &tr, bool show_queue);
 stations_elm_t *trains_find_station_dest(trains_elm_t *train, std::string station_name);
 /* 3. 10 */
 void __trains_delete_station_entirely(trains_t &tr, stations_t &st, trains_elm_t *train, std::string station_name);
+bool trains_has_tickets(trains_t &tr);
 void trains_simulate_run(trains_t &tr, stations_t &st);
