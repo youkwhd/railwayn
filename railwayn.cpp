@@ -3,7 +3,7 @@
 
 #include "stations.h"
 #include "trains.h"
-#include "queue.h"
+#include "destinations.h"
 
 #define STATION_1 "Ketapang (1)"
 #define STATION_2 "Geurugok (2)"
