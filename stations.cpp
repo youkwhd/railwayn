@@ -28,7 +28,6 @@ void stations_add_ticket(stations_elm_t *station, size_t passengers, stations_el
 
 size_t stations_tickets_count(stations_t &st)
 {
-    
     size_t count = 0;
 
     for (stations_elm_t *elm = st.first; elm != NULL; elm = elm->next) {

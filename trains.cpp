@@ -9,6 +9,7 @@ void trains_create(trains_t &tr)
 trains_elm_t *trains_create_elm(trains_infotype_t info)
 {
     trains_elm_t *elm = new trains_elm_t;
+    info.transfered_passengers_total = 0;
     elm->info = info;
     elm->next = NULL;
     stations_queue_create(elm->stations_queue);

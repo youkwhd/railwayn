@@ -53,21 +53,7 @@ int main(void)
     stations_debug(stations);
 
     trains_elm_t *train_1 = trains_insert_last(trains, {TRAIN_1, TRAIN_PASSENGER_SIZE});
-    stations_queue_enqueue(train_1->stations_queue, station_3);
-    stations_queue_enqueue(train_1->stations_queue, station_4);
-
     trains_elm_t *train_2 = trains_insert_last(trains, {TRAIN_2, TRAIN_PASSENGER_SIZE});
-    stations_queue_enqueue(train_2->stations_queue, station_1);
-    stations_queue_enqueue(train_2->stations_queue, station_4);
-    stations_queue_enqueue(train_2->stations_queue, station_2);
-
-    trains_elm_t *train_3 = trains_insert_last(trains, {TRAIN_3, TRAIN_PASSENGER_SIZE});
-    stations_queue_enqueue(train_3->stations_queue, station_4);
-
-    trains_elm_t *train_4 = trains_insert_last(trains, {TRAIN_4, TRAIN_PASSENGER_SIZE});
-    stations_queue_enqueue(train_4->stations_queue, station_2);
-    stations_queue_enqueue(train_4->stations_queue, station_3);
-    stations_queue_enqueue(train_4->stations_queue, station_1);
 
     std::cout << stations_tickets_count(stations) << std::endl;
 

@@ -1,14 +1,18 @@
 #pragma once
 
 #include <iostream>
+#include <queue>
+
 #include "stations.h"
 #include "queue.h"
 
-#define TRAIN_PASSENGERS_MAX 128
+#define TRAIN_PASSENGGERS_MAX 100
 
 typedef struct {
     std::string train_name;
     size_t passengers;
+    std::queue<ticket_t> destinations;
+    size_t transfered_passengers_total;
 } trains_infotype_t;
 
 typedef struct trains_elm_t trains_elm_t;
