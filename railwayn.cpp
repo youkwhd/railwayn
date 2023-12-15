@@ -16,8 +16,6 @@
 #define TRAIN_3 "Ambarawa Ekspres"
 #define TRAIN_4 "Tawang Alun"
 
-#define TRAIN_PASSENGER_SIZE 100
-
 /* 3. 12 */
 int main(void)
 {
@@ -33,31 +31,27 @@ int main(void)
     stations_elm_t *station_4 = stations_insert_last(stations, {STATION_4});
     stations_elm_t *station_5 = stations_insert_last(stations, {STATION_5});
 
+    stations_add_ticket(station_1, 40, station_2);
     stations_add_ticket(station_1, 20, station_3);
     stations_add_ticket(station_1, 50, station_3);
-    stations_add_ticket(station_1, 40, station_2);
 
     stations_add_ticket(station_2, 40, station_3);
-    stations_add_ticket(station_2, 50, station_5);
     stations_add_ticket(station_2, 40, station_4);
+    stations_add_ticket(station_2, 50, station_5);
 
     stations_add_ticket(station_3, 40, station_1);
-    stations_add_ticket(station_3, 20, station_5);
     stations_add_ticket(station_3, 30, station_4);
+    stations_add_ticket(station_3, 20, station_5);
 
     stations_add_ticket(station_4, 40, station_5);
 
     stations_add_ticket(station_5, 10, station_1);
     stations_add_ticket(station_5, 10, station_2);
 
-    stations_debug(stations);
+    trains_elm_t *train_1 = trains_insert_last(trains, {TRAIN_1});
+    trains_elm_t *train_2 = trains_insert_last(trains, {TRAIN_2});
 
-    trains_elm_t *train_1 = trains_insert_last(trains, {TRAIN_1, TRAIN_PASSENGER_SIZE});
-    trains_elm_t *train_2 = trains_insert_last(trains, {TRAIN_2, TRAIN_PASSENGER_SIZE});
-
-    std::cout << stations_tickets_count(stations) << std::endl;
-
-    /* trains_debug(trains, 1); */
+    trains_debug(trains, 1);
 
     trains_cleanup(trains);
     stations_cleanup(stations);

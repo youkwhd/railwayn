@@ -3,6 +3,8 @@
 #include <iostream>
 #include <vector>
 
+#include "direction.h"
+
 typedef struct stations_elm_t stations_elm_t;
 
 typedef struct ticket_t {
