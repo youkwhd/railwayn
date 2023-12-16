@@ -102,6 +102,7 @@ trains_infotype_t trains_delete(trains_t &tr, trains_elm_t *train) {
 
     __train->next = __train->next->next;
     trains_infotype_t __info = train->info;
+    destinations_cleanup(train->destinations);
     delete train;
     return __info;
 }
@@ -151,11 +152,11 @@ stations_elm_t *trains_find_station_dest(trains_elm_t *train, std::string statio
 void __trains_delete_station_entirely(trains_t &tr, stations_t &st, trains_elm_t *train, std::string station_name)
 {
     for (trains_elm_t *elm = tr.head; elm != NULL; elm = elm->next) {
-        destinations_elm_t *queue_elm = destinations_find(elm->destinations, station_name);
+        destinations_elm_t *dest = destinations_find(elm->destinations, station_name);
 
-        while (queue_elm != NULL) {
-            destinations_delete(elm->destinations, queue_elm);
-            queue_elm = destinations_find(elm->destinations, station_name);
+        while (dest != NULL) {
+            destinations_delete(elm->destinations, dest);
+            dest = destinations_find(elm->destinations, station_name);
         }
     }
 
@@ -240,11 +241,8 @@ void trains_simulate_run(trains_t &tr, stations_t &st)
             std::cout << std::endl;
         }
 
-#define MODE_INTERACTIVE
-
-#ifdef MODE_INTERACTIVE
+        std::cout << "Press ENTER to continue..";
         getchar();
-#endif
 
         std::cout << std::endl;
         station = dir == DIRECTION_RIGHT ? station->next : station->prev;
