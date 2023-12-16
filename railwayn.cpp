@@ -191,7 +191,7 @@ void menu(stations_t &stations, trains_t &trains) {
             std::cout << "Train name ::= ";
             std::string train_name = __read_string();
 
-            destinations_length(trains_find(trains, train_name)->destinations);
+            std::cout << "[INFO] " << destinations_length(trains_find(trains, train_name)->destinations) << " tickets found" << std::endl;
             break;
         }
         case 12: {
