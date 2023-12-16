@@ -85,12 +85,33 @@ trains_infotype_t trains_delete_last(trains_t &tr)
     return __info;
 }
 
-void trains_debug(trains_t &tr, bool show_queue)
+trains_infotype_t trains_delete(trains_t &tr, trains_elm_t *train) {
+    if (tr.head == train) {
+        return trains_delete_first(tr);
+    }
+
+    if (tr.tail == train) {
+        return trains_delete_last(tr);
+    }
+
+    trains_elm_t *__train = tr.head;
+
+    while (__train->next != train) {
+        __train = __train->next;
+    }
+
+    __train->next = __train->next->next;
+    trains_infotype_t __info = train->info;
+    delete train;
+    return __info;
+}
+
+void trains_debug(trains_t &tr, bool show_ticket)
 {
     for (trains_elm_t *elm = tr.head; elm != NULL; elm = elm->next) {
         std::cout << "Train: " << elm->info.train_name << std::endl;
 
-        if (show_queue)
+        if (show_ticket)
             destinations_debug(elm->destinations);
 
         if (elm->next != NULL)
@@ -218,6 +239,8 @@ void trains_simulate_run(trains_t &tr, stations_t &st)
 
             std::cout << std::endl;
         }
+
+#define MODE_INTERACTIVE
 
 #ifdef MODE_INTERACTIVE
         getchar();
