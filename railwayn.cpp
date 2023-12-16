@@ -56,7 +56,10 @@ void menu(stations_t &stations, trains_t &trains) {
     int option;
 
     do {
-        std::cout << "+--------==== Railwayn ====--------+" << std::endl;
+        std::cout << "------------------------------------" << std::endl;
+        std::cout << "      RAILWAYN - UNI ASSIGNMENT     " << std::endl;
+        std::cout << "        INTERACTIVE MAIN MENU       " << std::endl;
+        std::cout << "------------------------------------" << std::endl;
         std::cout << "1. Insert train" << std::endl;
         std::cout << "2. Show all trains" << std::endl;
         std::cout << "3. Delete train" << std::endl;
