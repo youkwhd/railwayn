@@ -1,4 +1,14 @@
 railwayn
 ========
 
-Railway simulation for Uni task.
+An archive of a university final project.
+
+Compiling
+---------
+
+    ./build.sh
+
+Running
+-------
+
+    ./railwayn -R
