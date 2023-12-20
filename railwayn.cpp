@@ -2,6 +2,8 @@
 #include <string>
 #include <vector>
 
+#include "external/crow.h"
+
 #include "stations.h"
 #include "trains.h"
 #include "destinations.h"
@@ -15,6 +17,11 @@
 #define TRAIN_A "Ambarawa Ekspres"
 #define TRAIN_B "Tawang Alun"
 
+#define SERVER_PORT 3000
+
+stations_t stations;
+trains_t trains;
+
 std::string __read_string()
 {
     std::string str;
@@ -23,7 +30,7 @@ std::string __read_string()
     return str;
 }
 
-void railwayn_insert_default_data(stations_t &stations, trains_t &trains) 
+void railwayn_insert_default_data() 
 {
     trains_insert_last(trains, {TRAIN_A});
     trains_insert_last(trains, {TRAIN_B});
@@ -52,7 +59,7 @@ void railwayn_insert_default_data(stations_t &stations, trains_t &trains)
     stations_add_ticket(station_5, 10, station_2);
 }
 
-void menu(stations_t &stations, trains_t &trains) {
+void menu() {
     int option;
 
     do {
@@ -204,7 +211,7 @@ void menu(stations_t &stations, trains_t &trains) {
             trains_create(trains);
             stations_create(stations);
 
-            railwayn_insert_default_data(stations, trains);
+            railwayn_insert_default_data();
             std::cout << "[INFO] Successfully loaded data" << std::endl;
             break;
         }
@@ -223,22 +230,153 @@ void menu(stations_t &stations, trains_t &trains) {
     } while (option != 0);
 }
 
+void railwayn_start_server()
+{
+    bool __server_shutdown = false;
+    crow::SimpleApp sv;
+
+    CROW_ROUTE(sv, "/css/<string>")([](std::string filename) {
+        crow::response res;
+        res.set_static_file_info("./css/" + filename);
+        return res;
+    });
+
+    CROW_ROUTE(sv, "/quit")([&]() {
+        /* Trying to stop the server before 
+         * returning the response considered harmful
+         */
+        sv.stop();
+
+        return
+            "<!DOCTYPE html>"
+            "<html>"
+                "<head>"
+                    "<link rel=\"stylesheet\" href=\"/css/global.css\">"
+                "</head>"
+                "<body>"
+                    "<main>"
+                        "<h1>Railwayn</h1>"
+                        "<p>Shutting down server..</p>"
+                    "</main>"
+                "</body>"
+            "</html>";
+    });
+
+    CROW_ROUTE(sv, "/")([](const crow::request &req) {
+        const char *reset = req.url_params.get("r");
+
+        if (reset) {
+            trains_cleanup(trains);
+            stations_cleanup(stations);
+
+            trains_create(trains);
+            stations_create(stations);
+
+            railwayn_insert_default_data();
+        }
+
+        return
+            "<!DOCTYPE html>"
+            "<html>"
+                "<head>"
+                    "<link rel=\"stylesheet\" href=\"/css/global.css\">"
+                "</head>"
+                "<body>"
+                    "<main>"
+                        "<h1>Railwayn</h1>"
+                        "<a href=\"/add/station\">"
+                            "<button>"
+                                "Add new station"
+                            "</button>"
+                        "</a>"
+                        "<a href=\"/add/ticket\">"
+                            "<button>"
+                                "Add new ticket"
+                            "</button>"
+                        "</a>"
+                        "<a href=\"/add/train\">"
+                            "<button>"
+                                "Add new train"
+                            "</button>"
+                        "</a>"
+                        "<a href=\"/?r=1\">"
+                            "<button>"
+                                "Reset data to default"
+                            "</button>"
+                        "</a>"
+                        "<a href=\"/run\">"
+                            "<button>"
+                                "Run"
+                            "</button>"
+                        "</a>"
+                        "<a href=\"/quit\">"
+                            "<button>"
+                                "Quit"
+                            "</button>"
+                        "</a>"
+                    "</main>"
+                "</body>"
+            "</html>";
+    });
+
+
+    CROW_ROUTE(sv, "/add/ticket")([](const crow::request &req) {
+        const char *origin_station = req.url_params.get("origin");
+        const char *dest_station = req.url_params.get("dest");
+
+        if (origin_station && dest_station) {
+            stations_add_ticket(stations_find(stations, origin_station), 55, stations_find(stations, dest_station));
+            stations_debug(stations);
+        }
+
+        return
+            "<!DOCTYPE html>"
+            "<html>"
+                "<head>"
+                    "<link rel=\"stylesheet\" href=\"/css/global.css\">"
+                "</head>"
+                "<body>"
+                    "<main>"
+                        "<h1>Railwayn</h1>"
+                        "<form action=\"/add/ticket\" method=\"GET\">"
+                            "<div>"
+                                "<label for=\"origin\">Origin station: </label>"
+                                "<input name=\"origin\" />"
+                            "</div>"
+                            "<div>"
+                                "<label for=\"dest\">Destination station: </label>"
+                                "<input name=\"dest\" />"
+                            "</div>"
+                            "<button type=\"submit\">"
+                                "Add"
+                            "</button>"
+                        "</form>"
+                    "</main>"
+                "</body>"
+            "</html>";
+    });
+
+    sv.port(SERVER_PORT).multithreaded().run();
+}
+
 /* 3. 12 */
 int main(int argc, char **argv)
 {
-    stations_t stations;
-    trains_t trains;
-
     trains_create(trains);
     stations_create(stations);
 
     if (argc >= 2 && std::string(argv[1]) == "-R") {
-        railwayn_insert_default_data(stations, trains);
+        railwayn_insert_default_data();
         trains_simulate_run(trains, stations);
         goto cleanups;
     }
 
-    menu(stations, trains);
+    if (argc >= 2 && std::string(argv[1]) == "-S") {
+        railwayn_start_server();
+        goto cleanups;
+    }
+
+    menu();
 
 cleanups:
     trains_cleanup(trains);

@@ -1,0 +1,25 @@
+:root {
+    --color-black: #121212;
+    --color-white: #FFFFFF;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    background-color: var(--color-black);
+    color: var(--color-white);
+}
+
+body {
+    max-width: 660px;
+    padding: 0 15px;
+    margin: 30px auto;
+}
+
+main {
+    h1, h2, h3, h4, h5, h6 {
+        text-align: center;
+    }
+}
