@@ -1,15 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
 :root {
     --color-black: #121212;
     --color-white: #FFFFFF;
+    --color-gray: #222831;
 }
 
 * {
     box-sizing: border-box;
+    color: var(--color-white);
 }
 
 html, body {
     background-color: var(--color-black);
     color: var(--color-white);
+    font-family: 'Inter', sans-serif;
 }
 
 body {
@@ -18,8 +23,44 @@ body {
     margin: 30px auto;
 }
 
+a {
+    color: white;
+    text-decoration: none;
+}
+
+input {
+    background: none;
+    outline: none;
+    border: 1px solid var(--color-white);
+    border-radius: 4px;
+
+    width: 100%;
+    margin: 10px 0px;
+    padding: 10px;
+}
+
+button {
+    background: var(--color-gray);
+    box-shadow: rgba(255, 255, 255, 0) 0 0 0 3px, rgba(0, 102, 255, 0) 0 0 0 4px;
+    outline: none;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+
+    font-weight: 800;
+
+    width: 100%;
+    margin: 10px 0px;
+    padding: 10px;
+
+    :focus {
+        border: none;
+    }
+}
+
 main {
     h1, h2, h3, h4, h5, h6 {
         text-align: center;
+        font-weight: 900;
     }
 }

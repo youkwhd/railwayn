@@ -1,8 +1,12 @@
+#include <cstddef>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <vector>
 
-#include "external/crow.h"
+#ifndef NO_WEBSERVER
+#include <crow.h>
+#endif
 
 #include "stations.h"
 #include "trains.h"
@@ -230,9 +234,9 @@ void menu() {
     } while (option != 0);
 }
 
+#ifndef NO_WEBSERVER
 void railwayn_start_server()
 {
-    bool __server_shutdown = false;
     crow::SimpleApp sv;
 
     CROW_ROUTE(sv, "/css/<string>")([](std::string filename) {
@@ -255,7 +259,9 @@ void railwayn_start_server()
                 "</head>"
                 "<body>"
                     "<main>"
-                        "<h1>Railwayn</h1>"
+                        "<h1>"
+                            "<a href=\"/\">Railwayn</a>"
+                        "</h1>"
                         "<p>Shutting down server..</p>"
                     "</main>"
                 "</body>"
@@ -271,11 +277,10 @@ void railwayn_start_server()
 
             trains_create(trains);
             stations_create(stations);
-
-            railwayn_insert_default_data();
         }
 
-        return
+        std::stringstream html5;
+        html5 <<
             "<!DOCTYPE html>"
             "<html>"
                 "<head>"
@@ -283,7 +288,14 @@ void railwayn_start_server()
                 "</head>"
                 "<body>"
                     "<main>"
-                        "<h1>Railwayn</h1>"
+                        "<h1>"
+                            "<a href=\"/\">Railwayn</a>"
+                        "</h1>"
+                        "<a href=\"/add/train\">"
+                            "<button>"
+                                "Add new train"
+                            "</button>"
+                        "</a>"
                         "<a href=\"/add/station\">"
                             "<button>"
                                 "Add new station"
@@ -294,19 +306,9 @@ void railwayn_start_server()
                                 "Add new ticket"
                             "</button>"
                         "</a>"
-                        "<a href=\"/add/train\">"
-                            "<button>"
-                                "Add new train"
-                            "</button>"
-                        "</a>"
                         "<a href=\"/?r=1\">"
                             "<button>"
-                                "Reset data to default"
-                            "</button>"
-                        "</a>"
-                        "<a href=\"/run\">"
-                            "<button>"
-                                "Run"
+                                "Reset data"
                             "</button>"
                         "</a>"
                         "<a href=\"/quit\">"
@@ -314,22 +316,26 @@ void railwayn_start_server()
                                 "Quit"
                             "</button>"
                         "</a>"
+                        "<p>Trains:</p>"
+                        << trains_print_html5(trains) <<
+                        "<p>Stations:</p>"
+                        << stations_print_html5(stations) <<
                     "</main>"
                 "</body>"
             "</html>";
+
+        return html5.str();
     });
 
+    CROW_ROUTE(sv, "/add/station")([](const crow::request &req) {
+        const char *station_name = req.url_params.get("name");
 
-    CROW_ROUTE(sv, "/add/ticket")([](const crow::request &req) {
-        const char *origin_station = req.url_params.get("origin");
-        const char *dest_station = req.url_params.get("dest");
-
-        if (origin_station && dest_station) {
-            stations_add_ticket(stations_find(stations, origin_station), 55, stations_find(stations, dest_station));
-            stations_debug(stations);
+        if (station_name && std::string(station_name) != "") {
+            stations_insert_last(stations, {station_name});
         }
 
-        return
+        std::stringstream html5;
+        html5 <<
             "<!DOCTYPE html>"
             "<html>"
                 "<head>"
@@ -337,7 +343,90 @@ void railwayn_start_server()
                 "</head>"
                 "<body>"
                     "<main>"
-                        "<h1>Railwayn</h1>"
+                        "<h1>"
+                            "<a href=\"/\">Railwayn</a>"
+                        "</h1>"
+                        "<form action=\"/add/station\" method=\"GET\">"
+                            "<div>"
+                                "<label for=\"name\">Station name: </label>"
+                                "<input name=\"name\" />"
+                            "</div>"
+                            "<button type=\"submit\">"
+                                "Add"
+                            "</button>"
+                        "</form>"
+                        "<p>Stations:</p>"
+                        << stations_print_html5(stations) <<
+                    "</main>"
+                "</body>"
+            "</html>";
+
+        return html5.str();
+    });
+
+    CROW_ROUTE(sv, "/add/train")([](const crow::request &req) {
+        const char *train_name = req.url_params.get("name");
+
+        if (train_name && std::string(train_name) != "") {
+            trains_insert_last(trains, {train_name});
+        }
+
+        std::stringstream html5;
+        html5 <<
+            "<!DOCTYPE html>"
+            "<html>"
+                "<head>"
+                    "<link rel=\"stylesheet\" href=\"/css/global.css\">"
+                "</head>"
+                "<body>"
+                    "<main>"
+                        "<h1>"
+                            "<a href=\"/\">Railwayn</a>"
+                        "</h1>"
+                        "<form action=\"/add/train\" method=\"GET\">"
+                            "<div>"
+                                "<label for=\"name\">Train name: </label>"
+                                "<input name=\"name\" />"
+                            "</div>"
+                            "<button type=\"submit\">"
+                                "Add"
+                            "</button>"
+                        "</form>"
+                        "<p>Trains:</p>"
+                        << trains_print_html5(trains) <<
+                    "</main>"
+                "</body>"
+            "</html>";
+
+        return html5.str();
+    });
+
+    CROW_ROUTE(sv, "/add/ticket")([](const crow::request &req) {
+        const char *origin_station = req.url_params.get("origin");
+        const char *dest_station = req.url_params.get("dest");
+        const char *passengers = req.url_params.get("passengers");
+
+        if (origin_station && dest_station && passengers) {
+            stations_elm_t *__origin = stations_find(stations, origin_station);
+            stations_elm_t *__dest = stations_find(stations, dest_station);
+            
+            if (__origin && __dest) {
+                stations_add_ticket(__origin, std::stoi(passengers), __dest);
+            }
+        }
+
+        std::stringstream html5;
+        html5 <<
+            "<!DOCTYPE html>"
+            "<html>"
+                "<head>"
+                    "<link rel=\"stylesheet\" href=\"/css/global.css\">"
+                "</head>"
+                "<body>"
+                    "<main>"
+                        "<h1>"
+                            "<a href=\"/\">Railwayn</a>"
+                        "</h1>"
                         "<form action=\"/add/ticket\" method=\"GET\">"
                             "<div>"
                                 "<label for=\"origin\">Origin station: </label>"
@@ -347,17 +436,26 @@ void railwayn_start_server()
                                 "<label for=\"dest\">Destination station: </label>"
                                 "<input name=\"dest\" />"
                             "</div>"
+                            "<div>"
+                                "<label for=\"passengers\">Passengers: </label>"
+                                "<input name=\"passengers\" />"
+                            "</div>"
                             "<button type=\"submit\">"
                                 "Add"
                             "</button>"
                         "</form>"
+                        "<p>Stations:</p>"
+                        << stations_print_html5(stations) <<
                     "</main>"
                 "</body>"
             "</html>";
+
+        return html5.str();
     });
 
     sv.port(SERVER_PORT).multithreaded().run();
 }
+#endif // NO_WEBSERVER
 
 /* 3. 12 */
 int main(int argc, char **argv)
@@ -371,10 +469,12 @@ int main(int argc, char **argv)
         goto cleanups;
     }
 
+#ifndef NO_WEBSERVER
     if (argc >= 2 && std::string(argv[1]) == "-S") {
         railwayn_start_server();
         goto cleanups;
     }
+#endif // NO_WEBSERVER
 
     menu();
 

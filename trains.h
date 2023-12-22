@@ -49,3 +49,4 @@ void __trains_delete_station_entirely(trains_t &tr, stations_t &st, trains_elm_t
 bool trains_has_tickets(trains_t &tr);
 void trains_simulate_run(trains_t &tr, stations_t &st);
 trains_infotype_t trains_delete(trains_t &tr, trains_elm_t *train);
+std::string trains_print_html5(trains_t &tr);

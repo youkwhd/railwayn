@@ -162,3 +162,41 @@ void stations_cleanup(stations_t &st)
         delete tmp;
     }
 }
+
+std::string stations_print_html5(stations_t &st)
+{
+    std::string html5;
+
+    if (st.first == NULL) {
+        return "<p>NONE</p>";
+    }
+
+    html5 += "<ul>";
+    for (stations_elm_t *station = st.first; station != NULL; station = station->next) {
+        html5 += "<li>";
+        html5 += station->info.name;
+
+        if (station->info.tickets.begin() != station->info.tickets.end()) {
+            html5 += "<ul>";
+        }
+
+        for (auto it = station->info.tickets.begin(); it != station->info.tickets.end(); it++) {
+            html5 += "<li> Destination: ";
+            html5 += it->dest->info.name;
+            html5 += "</li>";
+            html5 += "<li> Passengers: ";
+            html5 += std::to_string(it->passengers);
+            html5 += "</li>";
+            html5 += "<br/>";
+        }
+
+        if (station->info.tickets.begin() != station->info.tickets.end()) {
+            html5 += "</ul>";
+        }
+
+        html5 += "</li>";
+    }
+
+    html5 += "</ul>";
+    return html5;
+}

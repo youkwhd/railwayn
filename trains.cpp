@@ -251,3 +251,22 @@ void trains_simulate_run(trains_t &tr, stations_t &st)
         }
     }
 }
+
+std::string trains_print_html5(trains_t &tr)
+{
+    std::string html5;
+
+    if (tr.head == NULL) {
+        return "<p>NONE</p>";
+    }
+
+    html5 += "<ul>";
+    for (trains_elm_t *train = tr.head; train != NULL; train = train->next) {
+        html5 += "<li>";
+        html5 += train->info.train_name;
+        html5 += "</li>";
+    }
+    html5 += "</ul>";
+
+    return html5;
+}
