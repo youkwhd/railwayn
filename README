@@ -3,10 +3,15 @@ railwayn
 
 An archive of a uni project.
 
+Dependencies
+------------
+
+    - Crow, for serving HTTP Service (optional).
+
 Compiling
 ---------
 
-    ./build.sh
+    ./build.sh [-DNO_WEBSERVER]
 
 Running
 -------
