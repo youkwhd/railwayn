@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 
-#include "direction.h"
+#include "common.h"
 
 typedef struct stations_elm_t stations_elm_t;
 

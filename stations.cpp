@@ -23,6 +23,10 @@ bool stations_is_empty(stations_t &st)
 
 void stations_add_ticket(stations_elm_t *station, size_t passengers, stations_elm_t *dest)
 {
+    if (station->info.name == dest->info.name || passengers > TRAIN_PASSENGGERS_MAX) {
+        return;
+    }
+
     station->info.tickets.push_back({ passengers, dest });
 }
 
@@ -39,7 +43,12 @@ size_t stations_tickets_count(stations_t &st)
 
 stations_elm_t *stations_insert_first(stations_t &st, stations_infotype_t info) 
 {
+    if (stations_find(st, info.name)) {
+        return NULL;
+    }
+
     stations_elm_t *elm = stations_create_elm(info);
+
     if (stations_is_empty(st)) {
         st.first = elm;
         st.last = elm; 
@@ -54,6 +63,10 @@ stations_elm_t *stations_insert_first(stations_t &st, stations_infotype_t info)
 
 stations_elm_t *stations_insert_last(stations_t &st, stations_infotype_t info) 
 {
+    if (stations_find(st, info.name)) {
+        return NULL;
+    }
+
     stations_elm_t *elm = stations_create_elm(info);
 
     if (stations_is_empty(st)) {
@@ -70,6 +83,7 @@ stations_elm_t *stations_insert_last(stations_t &st, stations_infotype_t info)
 stations_infotype_t stations_delete_first(stations_t &st) 
 {
     stations_elm_t *elm = st.first;
+
     if (st.first->next == NULL) {
         st.first = NULL;
         st.last = NULL;
@@ -78,12 +92,14 @@ stations_infotype_t stations_delete_first(stations_t &st)
         st.first->prev = NULL;
         elm->next = NULL;
     }
+
     return elm->info;
 }
 
 stations_infotype_t stations_delete_last(stations_t &st) 
 {
     stations_elm_t *elm = st.last;
+
     if (st.first->next == NULL) {
         st.first = NULL;
         st.last = NULL;
@@ -92,6 +108,7 @@ stations_infotype_t stations_delete_last(stations_t &st)
         st.last->next = NULL;
         elm->prev = NULL;
     }
+
     return elm->info;
 }
 
@@ -116,6 +133,7 @@ stations_infotype_t stations_delete(stations_t &st, stations_elm_t *station)
 void stations_debug(stations_t &st) 
 {
     stations_elm_t *elm = st.first;
+
     while (elm != NULL) {
         std::cout << "Station: " << elm->info.name << std::endl;
 
@@ -132,12 +150,14 @@ void stations_debug(stations_t &st)
 stations_elm_t *stations_find(stations_t &st, std::string name)
 {
     stations_elm_t *elm = st.first;
+
     while (elm != NULL) {
         if (elm->info.name == name) {
             return elm;
         }
         elm = elm->next;
     }
+
     return NULL;
 }
 

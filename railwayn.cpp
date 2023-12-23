@@ -401,6 +401,8 @@ void railwayn_start_server()
         return html5.str();
     });
 
+        std::cout << "7. Assign ticket to train" << std::endl;
+
     CROW_ROUTE(sv, "/add/ticket")([](const crow::request &req) {
         const char *origin_station = req.url_params.get("origin");
         const char *dest_station = req.url_params.get("dest");
@@ -463,14 +465,22 @@ int main(int argc, char **argv)
     trains_create(trains);
     stations_create(stations);
 
-    if (argc >= 2 && std::string(argv[1]) == "-R") {
+    std::string arg = argc >= 2 ? std::string(argv[1]) : "";
+
+    if (argc >= 2 && (arg == "-h" || arg == "--help")) {
+        std::cout << "Usage: " << argv[0] << " [-h | --help] [-R | --run] [-S | --serve]" << std::endl;
+        std::cout << "An archive of a uni project." << std::endl;
+        goto cleanups;
+    }
+
+    if (argc >= 2 && (arg == "-R" || arg == "--run")) {
         railwayn_insert_default_data();
         trains_simulate_run(trains, stations);
         goto cleanups;
     }
 
 #ifndef NO_WEBSERVER
-    if (argc >= 2 && std::string(argv[1]) == "-S") {
+    if (argc >= 2 && (arg == "-S" || arg == "--serve")) {
         railwayn_start_server();
         goto cleanups;
     }

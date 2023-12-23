@@ -3,10 +3,8 @@
 #include <iostream>
 
 #include "stations.h"
-#include "direction.h"
+#include "common.h"
 #include "destinations.h"
-
-#define TRAIN_PASSENGGERS_MAX 100
 
 typedef struct {
     std::string train_name;

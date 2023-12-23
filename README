@@ -11,9 +11,11 @@ Dependencies
 Compiling
 ---------
 
+Pass -DNO_WEBSERVER to disable Crow.
+
     ./build.sh [-DNO_WEBSERVER]
 
 Running
 -------
 
-    ./railwayn -R
+    ./railwayn

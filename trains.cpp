@@ -23,6 +23,10 @@ bool trains_is_empty(trains_t &tr)
 
 trains_elm_t *trains_insert_first(trains_t &tr, trains_infotype_t info)
 {
+    if (trains_find(tr, info.train_name)) {
+        return NULL;
+    }
+
     trains_elm_t *elm = trains_create_elm(info);
 
     if (trains_is_empty(tr)) {
@@ -38,6 +42,10 @@ trains_elm_t *trains_insert_first(trains_t &tr, trains_infotype_t info)
 
 trains_elm_t *trains_insert_last(trains_t &tr, trains_infotype_t info)
 {
+    if (trains_find(tr, info.train_name)) {
+        return NULL;
+    }
+
     trains_elm_t *elm = trains_create_elm(info);
 
     if (trains_is_empty(tr)) {
