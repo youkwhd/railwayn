@@ -158,7 +158,7 @@ void menu() {
             std::string station_name = __read_string();
             stations_elm_t *station = stations_find(stations, station_name);
 
-            std::cout << "Ticket passengers count (Max 100) ::= ";
+            std::cout << "Ticket passengers count ::= ";
             size_t passengers = 0;
             std::cin >> passengers;
 
