@@ -29,8 +29,9 @@ trains_t trains;
 std::string __read_string()
 {
     std::string str;
-    std::cin.ignore();
-    getline(std::cin, str, '\n');
+    std::cin >> str;
+    // std::cin.ignore();
+    // getline(std::cin, str, '\n');
     return str;
 }
 
